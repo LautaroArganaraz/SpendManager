@@ -1,7 +1,9 @@
+import sqlite3 as sq
+
 import numpy as np
 import pandas as pd
-import sqlite3 as sq
 import streamlit as st
+
 
 #This will tell if the transaction is positive or negative
 def calculate_amount(type: str, amount: float) -> float:

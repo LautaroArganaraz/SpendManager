@@ -1,7 +1,7 @@
 import sqlite3 as sq
 from pathlib import Path
-import pandas as pd
 
+import pandas as pd
 
 DB_PATH = Path(__file__).with_name("database.db")
 
@@ -46,4 +46,15 @@ def actual_month_data():
     """
     with sq.connect(DB_PATH) as conn:
         return pd.read_sql_query(amd_query, conn)
+
     
+def load_transactions():
+    with sq.connect(DB_PATH) as conn:
+        df_tr = pd.read_sql_query("SELECT * FROM transactions", conn)
+    if not df_tr.empty:
+        df_tr.columns = df_tr.columns.str.lower()
+        if 'note' not in df_tr.columns:
+            df_tr['notes'] = ''
+    df_tr['notes'] = df_tr['notes'].fillna('')
+    
+    return df_tr
